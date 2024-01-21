@@ -6,6 +6,8 @@ function refreshRightContainerForHome(element, path) {
         return;
     }
     console.log("refreshRightContainerForHome");
+    element.innerHTML = `<p>Hi 👋 I'm Onur (meaning "Honour" in English), a software engineer, dj, writer, and minimalist based in Amsterdam,
+    The Netherlands.</p>"`;
 }
 
 function refreshRightContainerForWriting(element, path) {

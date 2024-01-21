@@ -90,7 +90,12 @@ body {
     word-wrap: break-word;
     word-break: normal;
     overflow-y: scroll;
-    background-color: rebeccapurple;
+    /* background-color: white; */
+}
+.bg-dots {
+    background-repeat: repeat;
+    background-image: radial-gradient(#e5e7eb 1px, transparent 0);
+    background-size: 16px 16px;
 }
 /* 分割线 */
 #vertical-separator-line {
