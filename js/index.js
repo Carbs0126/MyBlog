@@ -1,32 +1,91 @@
+import router from "./router.js";
+
+// element是包含的容器
+function refreshRightContainerForHome(element, path) {
+    if (element == null) {
+        return;
+    }
+    console.log("refreshRightContainerForHome");
+}
+
+function refreshRightContainerForWriting(element, path) {
+    if (element == null) {
+        return;
+    }
+    if (path != null && path.toLowerCase() == "writing") {
+        console.log("refreshRightContainerForWriting");
+    }
+}
+
+function refreshRightContainerForJourney(element, path) {
+    if (element == null) {
+        return;
+    }
+    if (path != null && path.toLowerCase() == "journey") {
+        console.log("refreshRightContainerForJourney");
+    }
+}
+
+function refreshRightContainerForAbout(element, path) {
+    if (element == null) {
+        return;
+    }
+    if (path != null && path.toLowerCase() == "about") {
+        console.log("refreshRightContainerForAbout");
+    }
+}
+
+let refreshFunctions = {
+    home: refreshRightContainerForHome,
+    writing: refreshRightContainerForWriting,
+    journey: refreshRightContainerForJourney,
+    about: refreshRightContainerForAbout,
+};
+
+function updateFirstLevelMenuItemUIForSelected(element) {
+    if (!element.classList.contains("menu-item-selection")) {
+        element.classList.add("menu-item-selection");
+    }
+}
+
+function updateFirstLevelMenuItemUIForUnselected(element) {
+    element.classList.remove("menu-item-selection");
+}
+
+function addEventListenerForMenuItems(...strIDs) {
+    let elements = Array();
+    strIDs.forEach((strID) => {
+        elements.push(document.getElementById(strID));
+    });
+
+    elements.forEach((element) => {
+        // 添加一级菜单router
+        router.addFirstLevelRouter(
+            element.dataset.link,
+            document.getElementById("content-container-right"),
+            refreshFunctions[element.dataset.link]
+        );
+        // 添加一级菜单点击事件
+        element.addEventListener("click", function () {
+            // 更新MenuItem的UI
+            elements.forEach((ele) => {
+                if (element === ele) {
+                    updateFirstLevelMenuItemUIForSelected(element);
+                } else {
+                    updateFirstLevelMenuItemUIForUnselected(ele);
+                }
+            });
+            // 更新右侧面板
+            router.updateFirstLevelContainer(element.dataset.link);
+        });
+    });
+}
+
 (function () {
     window.onload = function () {
-        document.getElementById("my-avatar-image").src = "img/rick-avatar.png";
-
-        function addEventListenerForMenuItems(...strIDs) {
-            let elements = Array();
-            strIDs.forEach((strID) => {
-                elements.push(document.getElementById(strID));
-            });
-
-            elements.forEach((element) => {
-                element.addEventListener("click", function () {
-                    elements.forEach((ele) => {
-                        if (element === ele) {
-                            if (
-                                !element.classList.contains(
-                                    "menu-item-selection"
-                                )
-                            ) {
-                                element.classList.add("menu-item-selection");
-                            }
-                        } else {
-                            ele.classList.remove("menu-item-selection");
-                        }
-                    });
-                    console.log(this.dataset.link);
-                });
-            });
-        }
+        console.log("window.location.pathname--->" + window.location.pathname);
+        // window.location.pathname
+        document.getElementById("my-avatar-image").src = "/img/rick-avatar.png";
 
         addEventListenerForMenuItems(
             "menu-item-card-home",
@@ -59,6 +118,36 @@ var links = document.querySelectorAll('.custom-link');
             // 在这个例子中，我们使用了 window.history.pushState 方法来修改浏览器地址栏的地址。请注意，这只会更改地址栏上显示的地址，不会触发浏览器的实际页面导航。这样的行为对于单页应用（Single Page Application，SPA）等场景可能比较常见。
 
 // 请谨慎使用这种技术，因为在某些情况下，更改地址栏的地址可能会导致用户迷惑或影响用户体验。确保你的应用场景和用户交互设计合理。
+
+// app.js
+const appContainer = document.getElementById('app');
+
+// 路由映射表
+const routes = {
+  '/': 'Home Page',
+  '/about': 'About Page',
+  '/contact': 'Contact Page'
+};
+
+// 处理路由变化
+const handleRouteChange = () => {
+  const currentPath = window.location.pathname;
+  const content = routes[currentPath] || 'Page Not Found';
+  appContainer.innerHTML = `<div>${content}</div>`;
+};
+
+// 初始化应用
+const initApp = () => {
+  // 初始路由处理
+  handleRouteChange();
+
+  // 监听浏览器历史记录变化
+  window.addEventListener('popstate', handleRouteChange);
+};
+
+// 启动应用
+initApp();
+
 
         */
         /*
