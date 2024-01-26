@@ -18,6 +18,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="我的个人网站 Android iOS 前端 后端" />
         <meta name="keywords" content="我的个人网站" />
+        <link
+            rel="preload"
+            href="/font/Geist.woff2"
+            as="font"
+            crossorigin=""
+            type="font/woff2"
+        />
+        <link
+            rel="preload"
+            href="/font/JetBrains-Mono.woff2"
+            as="font"
+            crossorigin=""
+            type="font/woff2"
+        />
         <title>欢迎来到我的个人网站</title>
         <link rel="stylesheet" href="/css/index.style.css" />
         <link
@@ -120,9 +134,9 @@
                 <div class="menu-item-card-tag">2</div>
             </div>
             <div
-                id="menu-item-card-journey"
+                id="menu-item-card-column"
                 class="menu-item-theme-light menu-item-card"
-                data-link="journey"
+                data-link="column"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +152,7 @@
                 >
                     <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
                 </svg>
-                <div class="menu-item-card-title">Journey</div>
+                <div class="menu-item-card-title">Column</div>
                 <div class="menu-item-card-tag">3</div>
             </div>
             <div
@@ -166,6 +180,13 @@
             </div>
         </div>
         <div id="vertical-separator-line" class="separator-line"></div>
-        <div id="content-container-right" class="bg-dots"></div>
+        <div id="content-container-right" class="bg-dots">
+            <div id="content-container-home">
+                <div id="content-container-home-article"></div>
+            </div>
+            <div id="content-container-writing"></div>
+            <div id="content-container-column"></div>
+            <div id="content-container-about"></div>
+        </div>
     </body>
 </html>

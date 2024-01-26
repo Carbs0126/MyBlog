@@ -1,12 +1,29 @@
 import router from "./router.js";
 
+function displayAllChildrenButID(element, id) {
+    // console.log(element);
+    console.log(element.children);
+    for (let childEle of element.children) {
+        if (childEle.id == id) {
+            childEle.style.display = "block";
+        } else {
+            childEle.style.display = "none";
+        }
+    }
+}
+
 // element是包含的容器
 function refreshRightContainerForHome(element, path) {
     if (element == null) {
         return;
     }
+    displayAllChildrenButID(element, "content-container-home");
+
     console.log("refreshRightContainerForHome");
-    element.innerHTML = `<p>Hi 👋 I'm Onur (meaning "Honour" in English), a software engineer, dj, writer, and minimalist based in Amsterdam,
+    console.log(element.querySelector("#content-container-home-article"));
+    element.querySelector(
+        "#content-container-home-article"
+    ).innerHTML = `<p>Hi 👋 I'm Onur (meaning "Honour" in English), a software engineer, dj, writer, and minimalist based in Amsterdam,
     The Netherlands.</p>"`;
 }
 
@@ -19,12 +36,12 @@ function refreshRightContainerForWriting(element, path) {
     }
 }
 
-function refreshRightContainerForJourney(element, path) {
+function refreshRightContainerForColumn(element, path) {
     if (element == null) {
         return;
     }
-    if (path != null && path.toLowerCase() == "journey") {
-        console.log("refreshRightContainerForJourney");
+    if (path != null && path.toLowerCase() == "column") {
+        console.log("refreshRightContainerForColumn");
     }
 }
 
@@ -40,7 +57,7 @@ function refreshRightContainerForAbout(element, path) {
 let refreshFunctions = {
     home: refreshRightContainerForHome,
     writing: refreshRightContainerForWriting,
-    journey: refreshRightContainerForJourney,
+    column: refreshRightContainerForColumn,
     about: refreshRightContainerForAbout,
 };
 
@@ -92,7 +109,7 @@ function addEventListenerForMenuItems(...strIDs) {
         addEventListenerForMenuItems(
             "menu-item-card-home",
             "menu-item-card-writing",
-            "menu-item-card-journey",
+            "menu-item-card-column",
             "menu-item-card-about"
         );
         // ----------------------------------------------------------
