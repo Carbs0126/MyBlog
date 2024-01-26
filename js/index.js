@@ -1,8 +1,6 @@
 import router from "./router.js";
 
 function displayAllChildrenButID(element, id) {
-    // console.log(element);
-    console.log(element.children);
     for (let childEle of element.children) {
         if (childEle.id == id) {
             childEle.style.display = "block";
@@ -54,12 +52,21 @@ function refreshRightContainerForAbout(element, path) {
     }
 }
 
+let firstLevelIDS = [
+    "menu-item-card-home",
+    "menu-item-card-writing",
+    "menu-item-card-column",
+    "menu-item-card-about",
+];
+
 let refreshFunctions = {
     home: refreshRightContainerForHome,
     writing: refreshRightContainerForWriting,
     column: refreshRightContainerForColumn,
     about: refreshRightContainerForAbout,
 };
+
+const firstLevelIDElementMap = new Map();
 
 function updateFirstLevelMenuItemUIForSelected(element) {
     if (!element.classList.contains("menu-item-selection")) {
@@ -71,47 +78,82 @@ function updateFirstLevelMenuItemUIForUnselected(element) {
     element.classList.remove("menu-item-selection");
 }
 
-function addEventListenerForMenuItems(...strIDs) {
-    let elements = Array();
-    strIDs.forEach((strID) => {
-        elements.push(document.getElementById(strID));
-    });
+function inflateFirstLevelIDElementMap() {
+    for (let key of firstLevelIDS) {
+        firstLevelIDElementMap.set(key, document.getElementById(key));
+    }
+}
 
-    elements.forEach((element) => {
+function addEventListenerForMenuItems() {
+    let contentRightContainer = document.getElementById(
+        "content-container-right"
+    );
+    firstLevelIDElementMap.forEach((value, key) => {
+        console.log(key);
         // 添加一级菜单router
         router.addFirstLevelRouter(
-            element.dataset.link,
-            document.getElementById("content-container-right"),
-            refreshFunctions[element.dataset.link]
+            value.dataset.link,
+            contentRightContainer,
+            refreshFunctions[value.dataset.link]
         );
         // 添加一级菜单点击事件
-        element.addEventListener("click", function () {
+        value.addEventListener("click", function () {
+            console.log(firstLevelIDElementMap.values());
             // 更新MenuItem的UI
-            elements.forEach((ele) => {
-                if (element === ele) {
-                    updateFirstLevelMenuItemUIForSelected(element);
+            for (let ele of firstLevelIDElementMap.values()) {
+                if (value === ele) {
+                    updateFirstLevelMenuItemUIForSelected(value);
                 } else {
                     updateFirstLevelMenuItemUIForUnselected(ele);
                 }
-            });
+            }
             // 更新右侧面板
-            router.updateFirstLevelContainer(element.dataset.link);
+            router.updateFirstLevelContainer(value.dataset.link);
         });
     });
 }
 
+function updateMenuItemsUIForPath(urlPath) {
+    console.log("window.location.pathname--->" + urlPath);
+    let splitedPath = router.splitPath(urlPath);
+    console.log(splitedPath);
+    // let firstLevelPath = "home";
+    let elementIDToBeSelected = "menu-item-card-home";
+    if (splitedPath.length > 0) {
+        let firstLevelPath = splitedPath[0].toLowerCase();
+        if (
+            firstLevelPath != "home" &&
+            firstLevelPath != "index.html" &&
+            firstLevelPath in refreshFunctions
+        ) {
+            console.log("-------------->" + firstLevelPath);
+            // 找到element
+            elementIDToBeSelected = "menu-item-card-" + firstLevelPath;
+        }
+        // console.log(" >>> 0");
+        // } else {
+        // console.log(" === 0");
+    }
+    firstLevelIDElementMap.forEach((value, key) => {
+        if (key == elementIDToBeSelected) {
+            updateFirstLevelMenuItemUIForSelected(value);
+        } else {
+            updateFirstLevelMenuItemUIForUnselected(value);
+        }
+    });
+}
+
+function updateAvatar() {
+    document.getElementById("my-avatar-image").src = "/img/rick-avatar.png";
+}
+
 (function () {
     window.onload = function () {
-        console.log("window.location.pathname--->" + window.location.pathname);
-        // window.location.pathname
-        document.getElementById("my-avatar-image").src = "/img/rick-avatar.png";
+        updateAvatar();
+        inflateFirstLevelIDElementMap();
 
-        addEventListenerForMenuItems(
-            "menu-item-card-home",
-            "menu-item-card-writing",
-            "menu-item-card-column",
-            "menu-item-card-about"
-        );
+        addEventListenerForMenuItems();
+        updateMenuItemsUIForPath(window.location.pathname);
         // ----------------------------------------------------------
 
         /* 

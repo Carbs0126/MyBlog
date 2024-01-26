@@ -44,6 +44,7 @@ export default {
     addRouter,
     addFirstLevelRouter,
     updateFirstLevelContainer,
+    splitPath,
     // ContentContainer,
 };
 
