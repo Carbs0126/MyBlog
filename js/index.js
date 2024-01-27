@@ -17,8 +17,6 @@ function refreshRightContainerForHome(element, path) {
     }
     displayAllChildrenButID(element, "content-container-home");
 
-    console.log("refreshRightContainerForHome");
-    console.log(element.querySelector("#content-container-home-article"));
     element.querySelector(
         "#content-container-home-article"
     ).innerHTML = `<p>Hi 👋 I'm Onur (meaning "Honour" in English), a software engineer, dj, writer, and minimalist based in Amsterdam,
@@ -29,8 +27,15 @@ function refreshRightContainerForWriting(element, path) {
     if (element == null) {
         return;
     }
-    if (path != null && path.toLowerCase() == "writing") {
-        console.log("refreshRightContainerForWriting");
+    if (path != null) {
+        let splitedPath = router.splitPath(path);
+        if (
+            splitedPath.length > 0 &&
+            splitedPath[0].toLowerCase() == "writing"
+        ) {
+            displayAllChildrenButID(element, "content-container-writing");
+            console.log("refreshRightContainerForWriting");
+        }
     }
 }
 
@@ -38,8 +43,15 @@ function refreshRightContainerForColumn(element, path) {
     if (element == null) {
         return;
     }
-    if (path != null && path.toLowerCase() == "column") {
-        console.log("refreshRightContainerForColumn");
+    if (path != null) {
+        let splitedPath = router.splitPath(path);
+        if (
+            splitedPath.length > 0 &&
+            splitedPath[0].toLowerCase() == "column"
+        ) {
+            displayAllChildrenButID(element, "content-container-column");
+            console.log("refreshRightContainerForColumn");
+        }
     }
 }
 
@@ -47,8 +59,12 @@ function refreshRightContainerForAbout(element, path) {
     if (element == null) {
         return;
     }
-    if (path != null && path.toLowerCase() == "about") {
-        console.log("refreshRightContainerForAbout");
+    if (path != null) {
+        let splitedPath = router.splitPath(path);
+        if (splitedPath.length > 0 && splitedPath[0].toLowerCase() == "about") {
+            displayAllChildrenButID(element, "content-container-about");
+            console.log("refreshRightContainerForAbout");
+        }
     }
 }
 
@@ -89,7 +105,6 @@ function addEventListenerForMenuItems() {
         "content-container-right"
     );
     firstLevelIDElementMap.forEach((value, key) => {
-        console.log(key);
         // 添加一级菜单router
         router.addFirstLevelRouter(
             value.dataset.link,
@@ -98,7 +113,6 @@ function addEventListenerForMenuItems() {
         );
         // 添加一级菜单点击事件
         value.addEventListener("click", function () {
-            console.log(firstLevelIDElementMap.values());
             // 更新MenuItem的UI
             for (let ele of firstLevelIDElementMap.values()) {
                 if (value === ele) {
@@ -113,12 +127,9 @@ function addEventListenerForMenuItems() {
     });
 }
 
-function updateMenuItemsUIForPath(urlPath) {
-    console.log("window.location.pathname--->" + urlPath);
+function updateUIForPath(urlPath) {
     let splitedPath = router.splitPath(urlPath);
-    console.log(splitedPath);
-    // let firstLevelPath = "home";
-    let elementIDToBeSelected = "menu-item-card-home";
+    let menuItemElementIDToBeSelected = "menu-item-card-home";
     if (splitedPath.length > 0) {
         let firstLevelPath = splitedPath[0].toLowerCase();
         if (
@@ -126,16 +137,33 @@ function updateMenuItemsUIForPath(urlPath) {
             firstLevelPath != "index.html" &&
             firstLevelPath in refreshFunctions
         ) {
-            console.log("-------------->" + firstLevelPath);
-            // 找到element
-            elementIDToBeSelected = "menu-item-card-" + firstLevelPath;
+            menuItemElementIDToBeSelected = "menu-item-card-" + firstLevelPath;
         }
-        // console.log(" >>> 0");
-        // } else {
-        // console.log(" === 0");
+    }
+    updateMenuItemsUIForPath(splitedPath, menuItemElementIDToBeSelected);
+    // updateRightContainerForPath(splitedPath, menuItemElementIDToBeSelected);
+}
+
+function updateMenuItemsUIForPath(splitedPath, menuItemElementIDToBeSelected) {
+    firstLevelIDElementMap.forEach((value, key) => {
+        if (key == menuItemElementIDToBeSelected) {
+            updateFirstLevelMenuItemUIForSelected(value);
+        } else {
+            updateFirstLevelMenuItemUIForUnselected(value);
+        }
+    });
+}
+
+function updateRightContainerForPath(
+    splitedPath,
+    menuItemElementIDToBeSelected
+) {
+    if (menuItemElementIDToBeSelected == "menu-item-card-home") {
+        // home
+    } else {
     }
     firstLevelIDElementMap.forEach((value, key) => {
-        if (key == elementIDToBeSelected) {
+        if (key == menuItemElementIDToBeSelected) {
             updateFirstLevelMenuItemUIForSelected(value);
         } else {
             updateFirstLevelMenuItemUIForUnselected(value);
@@ -151,9 +179,12 @@ function updateAvatar() {
     window.onload = function () {
         updateAvatar();
         inflateFirstLevelIDElementMap();
-
         addEventListenerForMenuItems();
-        updateMenuItemsUIForPath(window.location.pathname);
+        updateUIForPath(window.location.pathname);
+
+        // updateMenuItemsUIForPath(window.location.pathname);
+        // updateRightContainerForPath(window.location.pathname);
+
         // ----------------------------------------------------------
 
         /* 

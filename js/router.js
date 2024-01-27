@@ -1,4 +1,3 @@
-// router.js
 class RouterUnit {
     // 请求某个url时，使用refreshFunction来刷新element
     // 比如请求 writing 时，对应包含两列的element，请求 /writing 后，调用对应的 refreshFunc 来刷新
@@ -23,8 +22,12 @@ function addRouter(path, containerElement, refreshFunc) {
     allRouters[path] = new RouterUnit(path, containerElement, refreshFunc);
 }
 
-function addFirstLevelRouter(path, element, refreshFunc) {
-    firstLevelRouters[path] = new RouterUnit(path, element, refreshFunc);
+function addFirstLevelRouter(path, contentContainerRightElement, refreshFunc) {
+    firstLevelRouters[path] = new RouterUnit(
+        path,
+        contentContainerRightElement,
+        refreshFunc
+    );
 }
 
 function updateFirstLevelContainer(firstLevelPath) {
@@ -33,26 +36,16 @@ function updateFirstLevelContainer(firstLevelPath) {
     }
 }
 
-// window.location.pathname
 function splitPath(pathname) {
     return pathname.split("/").filter((part) => part !== "");
 }
-
-// const ContentContainerElement = document.getElementById("content-container-right");
 
 export default {
     addRouter,
     addFirstLevelRouter,
     updateFirstLevelContainer,
     splitPath,
-    // ContentContainer,
 };
-
-// const routes = {
-//     "/": "Home Page",
-//     "/about": "About Page",
-//     "/contact": "Contact Page",
-// };
 
 /*
 // 处理路由变化
