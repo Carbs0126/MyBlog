@@ -11,6 +11,7 @@
     --content-container-left-width: 18rem;
     --content-container-left-padding: 12px;
     --scrollbar-width: 4px;
+    --content-container-writing-list-width: 22rem;
     /* --font-geist-sans: "__GeistSans_914793", "__GeistSans_Fallback_914793"; */
 }
 * {
@@ -114,7 +115,7 @@ body {
     background-size: 16px 16px;
 }
 /* 分割线 */
-#vertical-separator-line {
+.vertical-separator-line-100vh {
     width: 1px;
     height: 100vh;
 }
@@ -158,6 +159,8 @@ body {
 #author-name {
     margin-top: 8px;
     margin-left: 8px;
+}
+.text-highlight {
     color: #444;
     font-weight: bold;
 }
@@ -165,8 +168,12 @@ body {
 #author-job {
     margin-top: 2px;
     margin-left: 8px;
+}
+
+.text-normal {
     color: #aaa;
 }
+
 @keyframes avatar-rotate-animation {
     from {
         transform: rotate(0deg);
@@ -269,6 +276,64 @@ body {
         BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
         "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
         "Segoe UI Symbol", "Noto Color Emoji"; */
+}
+
+/* 文章 */
+#content-container-writing {
+    display: none;
+    flex: 1;
+    background-color: yellowgreen;
+}
+
+#content-container-writing-container {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    background-color: yellow;
+}
+/* 文章列表 */
+#content-container-writing-list {
+    width: var(--content-container-writing-list-width);
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+.writing-brief-info-container {
+    flex-direction: column;
+    margin-left: 0.6rem;
+    margin-right: 0.6rem;
+    margin-top: 0.2rem;
+    padding-top: 0.6rem;
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
+    padding-bottom: 0.6rem;
+    flex: 1;
+    border-radius: 4px;
+}
+
+.writing-brief-info-title {
+    white-space: nowrap; /* 不换行 */
+    overflow: hidden; /* 隐藏溢出部分 */
+    text-overflow: ellipsis; /* 显示省略号 */
+}
+
+.writing-brief-info-hint {
+    margin-top: 4px;
+}
+
+/* 文章内容 */
+#content-container-writing-content {
+    flex: 1;
+    height: 100vh;
+    background-color: red;
+}
+
+#content-container-column {
+    display: none;
+}
+
+#content-container-about {
+    display: none;
 }
 
 /* .menu-item-theme-dark {
