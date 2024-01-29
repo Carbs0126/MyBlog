@@ -122,19 +122,21 @@ function showWritingPanel(splitedPath) {
 
     if (writingItemBriefs.length == 0) {
         console.log("-------show writing panel 222");
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 20; i++) {
             let itemContainerEle = createOneWritingListItemContainerEle(
                 "writing-brief-info-container-id-" + i,
-                "今天天气不错",
+                "今天天气不错" + i,
                 "October 06 2023·1500 views"
             );
             writingListContainerElement.appendChild(itemContainerEle);
+            writingItemBriefs.push(itemContainerEle);
         }
     }
     if (splitedPath.length > 1) {
         console.log("show writing panel content 33333");
         showWritingContentPanel("hahahaahahahah 测试一下子");
     }
+    addListenerForWritingNavElement();
 }
 
 function showWritingContentPanel(content) {
@@ -173,6 +175,38 @@ function refreshRightContainerForAbout(element, path) {
             console.log("refreshRightContainerForAbout");
         }
     }
+}
+
+function addListenerForWritingNavElement() {
+    let writingNavEle = document.getElementById(
+        "content-container-writing-list-sticky-panel-title"
+    );
+    console.log(writingNavEle);
+    if (writingNavEle != null) {
+        if (!writingNavEle.hasAttribute("hasOnClickListener")) {
+            writingNavEle.addEventListener("click", function () {
+                console.log("writing nav clicked ");
+                updateUrlPath("/writing");
+                clearWritingContentPanel();
+            });
+            writingNavEle.setAttribute("hasOnClickListener", "added");
+        }
+    }
+}
+
+function clearWritingContentPanel() {
+    let writingContentEmptyEle = document.getElementById(
+        "content-container-writing-content-empty"
+    );
+    writingContentEmptyEle.style.display = "none";
+    let writingContentArticleContainerEle = document.getElementById(
+        "content-container-writing-content-article-container"
+    );
+    writingContentArticleContainerEle.style.display = "none";
+    let writingContentArticleEle = document.getElementById(
+        "content-container-writing-content-article"
+    );
+    writingContentArticleEle.innerHTML = "";
 }
 
 let firstLevelIDS = [
