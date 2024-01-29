@@ -83,41 +83,67 @@ function refreshRightContainerForWriting(element, fullPath) {
     }
 }
 
+let writingItemBriefs = [];
+
+function createOneWritingListItemContainerEle(
+    itemElementContainerID,
+    title,
+    hint
+) {
+    let itemElementContainer = document.createElement("div");
+    itemElementContainer.setAttribute("id", itemElementContainerID);
+    itemElementContainer.setAttribute(
+        "class",
+        "writing-brief-info-container menu-item-theme-light"
+    );
+    let itemElementTitle = document.createElement("div");
+    itemElementTitle.setAttribute(
+        "class",
+        "writing-brief-info-title text-highlight"
+    );
+    itemElementTitle.innerHTML = title;
+
+    let itemElementHint = document.createElement("div");
+    itemElementHint.setAttribute(
+        "class",
+        "writing-brief-info-hint text-normal"
+    );
+    itemElementHint.innerHTML = hint;
+    itemElementContainer.appendChild(itemElementTitle);
+    itemElementContainer.appendChild(itemElementHint);
+    return itemElementContainer;
+}
+
 function showWritingPanel(splitedPath) {
     let writingListContainerElement = document.getElementById(
         "content-container-writing-list"
     );
-    console.log(writingListContainerElement);
-    for (let i = 0; i < 10; i++) {
-        let itemElementContainer = document.createElement("div");
-        itemElementContainer.setAttribute(
-            "id",
-            "writing-brief-info-container-id-" + i
-        );
-        itemElementContainer.setAttribute(
-            "class",
-            "writing-brief-info-container menu-item-theme-light"
-        );
-        let itemElementTitle = document.createElement("div");
-        itemElementTitle.setAttribute(
-            "class",
-            "writing-brief-info-title text-highlight"
-        );
-        itemElementTitle.innerHTML = "今天天气不错";
+    console.log("-------show writing panel 111");
 
-        let itemElementHint = document.createElement("div");
-        itemElementHint.setAttribute(
-            "class",
-            "writing-brief-info-hint text-normal"
-        );
-        itemElementHint.innerHTML = "October 06 2023·1500 views";
-        itemElementContainer.appendChild(itemElementTitle);
-        itemElementContainer.appendChild(itemElementHint);
-        writingListContainerElement.appendChild(itemElementContainer);
+    if (writingItemBriefs.length == 0) {
+        console.log("-------show writing panel 222");
+        for (let i = 0; i < 10; i++) {
+            let itemContainerEle = createOneWritingListItemContainerEle(
+                "writing-brief-info-container-id-" + i,
+                "今天天气不错",
+                "October 06 2023·1500 views"
+            );
+            writingListContainerElement.appendChild(itemContainerEle);
+        }
     }
     if (splitedPath.length > 1) {
-        console.log("show writing panel");
+        console.log("show writing panel content 33333");
+        showWritingContentPanel("hahahaahahahah 测试一下子");
     }
+}
+
+function showWritingContentPanel(content) {
+    document.getElementById(
+        "content-container-writing-content-article-container"
+    ).style.display = "block";
+    document.getElementById(
+        "content-container-writing-content-article"
+    ).innerHTML = content;
 }
 
 function refreshRightContainerForColumn(element, path) {
