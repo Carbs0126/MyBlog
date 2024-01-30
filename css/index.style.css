@@ -276,7 +276,8 @@ body {
     margin-left: auto;
     margin-right: auto;
     line-height: 1.75;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
     max-width: 1080px;
     color: #333333;
     padding-left: 32px;
@@ -408,8 +409,26 @@ body {
     display: none;
 }
 
-#content-container-about {
+/* #content-container-about {
     display: none;
+} */
+
+/* 右侧about元素 */
+#content-container-about {
+    flex-grow: 1;
+    display: none;
+}
+
+#content-container-about-article {
+    margin-top: 128px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.75;
+    font-size: 1.2rem;
+    max-width: 1080px;
+    color: #333333;
+    padding-left: 32px;
+    padding-right: 32px;
 }
 
 /* .menu-item-theme-dark {

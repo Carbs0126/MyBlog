@@ -19,49 +19,9 @@ function refreshRightContainerForHome(element, path) {
 
     element.querySelector(
         "#content-container-home-article"
-    ).innerHTML = `<p><pre>Hi 👋 I'm 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    Onur (meaning "Honour" in English), a software engineer, dj, writer, and minimalist based in Amsterdam,
-    The Netherlands.</pre></p>"`;
+    ).innerHTML = `Hi 👋 I'm Onur (meaning Honour in English), a software engineer, dj, writer, and minimalist based in Amsterdam,
+    The Netherlands.`;
+    clearWritingPanel();
 }
 
 function refreshRightContainerForWriting(element, fullPath) {
@@ -83,8 +43,81 @@ function refreshRightContainerForWriting(element, fullPath) {
     }
 }
 
+function refreshRightContainerForColumn(element, path) {
+    if (element == null) {
+        return;
+    }
+    if (path != null) {
+        let splitedPath = router.splitPath(path);
+        if (
+            splitedPath.length > 0 &&
+            splitedPath[0].toLowerCase() == "column"
+        ) {
+            displayAllChildrenButID(element, "content-container-column");
+            console.log("refreshRightContainerForColumn");
+        }
+    }
+    clearWritingPanel();
+}
+
+function refreshRightContainerForAbout(element, path) {
+    if (element == null) {
+        return;
+    }
+    if (path != null) {
+        let splitedPath = router.splitPath(path);
+        if (splitedPath.length > 0 && splitedPath[0].toLowerCase() == "about") {
+            displayAllChildrenButID(element, "content-container-about");
+            console.log("refreshRightContainerForAbout");
+        }
+    }
+    element.querySelector(
+        "#content-container-about-article"
+    ).innerHTML = `<p><pre><h3 style="display:inline;">           将进酒</h3>（唐·李白）
+
+    君不见，黄河之水天上来，奔流到海不复回。
+    
+    君不见，高堂明镜悲白发，朝如青丝暮成雪。
+    
+    人生得意须尽欢，莫使金樽空对月。
+    
+    天生我材必有用，千金散尽还复来。
+    
+    烹羊宰牛且为乐，会须一饮三百杯。
+    
+    岑夫子，丹丘生，将进酒，君莫停。
+    
+    与君歌一曲，请君为我倾耳听。
+    
+    钟鼓馔玉不足贵，但愿长醉不复醒。
+    
+    古来圣贤皆寂寞，惟有饮者留其名。
+    
+    陈王昔时宴平乐，斗酒十千恣欢谑。
+    
+    主人何为言少钱，径须沽取对君酌。
+    
+    五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。</pre></p>`;
+    clearWritingPanel();
+}
+
 let writingItemBriefs = [];
-let selectedWritingItemElement = null;
+function clearWritingPanel() {
+    if (writingItemBriefs.length > 0) {
+        writingItemBriefs = [];
+        clearWritingListPanel();
+        clearWritingContentPanel();
+    }
+}
+
+function clearWritingListPanel() {
+    let writingListContainerElement = document.getElementById(
+        "content-container-writing-list"
+    );
+    if (writingListContainerElement != null) {
+        writingListContainerElement.innerHTML = "";
+    }
+}
 
 function createOneWritingListItemContainerEle(
     itemElementContainerID,
@@ -192,35 +225,6 @@ function showWritingContentPanel(content) {
     document.getElementById(
         "content-container-writing-content-article"
     ).innerHTML = content;
-}
-
-function refreshRightContainerForColumn(element, path) {
-    if (element == null) {
-        return;
-    }
-    if (path != null) {
-        let splitedPath = router.splitPath(path);
-        if (
-            splitedPath.length > 0 &&
-            splitedPath[0].toLowerCase() == "column"
-        ) {
-            displayAllChildrenButID(element, "content-container-column");
-            console.log("refreshRightContainerForColumn");
-        }
-    }
-}
-
-function refreshRightContainerForAbout(element, path) {
-    if (element == null) {
-        return;
-    }
-    if (path != null) {
-        let splitedPath = router.splitPath(path);
-        if (splitedPath.length > 0 && splitedPath[0].toLowerCase() == "about") {
-            displayAllChildrenButID(element, "content-container-about");
-            console.log("refreshRightContainerForAbout");
-        }
-    }
 }
 
 function addListenerForWritingNavElement() {
