@@ -17,5 +17,7 @@
 
 ## todo
 
-1. writingList 上方添加一个悬停的信息显示 content-container-writing-list
+1. writingList 为列表添加点击事件-》点击后，
+    1. url 要变
+    2. 右侧的内容要更改
 2. 前端添加 mock

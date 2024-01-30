@@ -88,7 +88,8 @@ let writingItemBriefs = [];
 function createOneWritingListItemContainerEle(
     itemElementContainerID,
     title,
-    hint
+    hint,
+    path
 ) {
     let itemElementContainer = document.createElement("div");
     itemElementContainer.setAttribute("id", itemElementContainerID);
@@ -111,6 +112,17 @@ function createOneWritingListItemContainerEle(
     itemElementHint.innerHTML = hint;
     itemElementContainer.appendChild(itemElementTitle);
     itemElementContainer.appendChild(itemElementHint);
+    itemElementContainer.addEventListener("click", function () {
+        updateUrlPath("/writing/" + path);
+        clearWritingContentPanel();
+        // todo 根据后台内容，填充右侧writingcontentpanel
+        showWritingContentPanel(
+            "title: " +
+                title +
+                " content: " +
+                "朝辞白帝彩云间，千里江陵一日还，两岸猿声啼不住，轻舟已过万重山。"
+        );
+    });
     return itemElementContainer;
 }
 
@@ -125,8 +137,10 @@ function showWritingPanel(splitedPath) {
         for (let i = 0; i < 20; i++) {
             let itemContainerEle = createOneWritingListItemContainerEle(
                 "writing-brief-info-container-id-" + i,
-                "今天天气不错" + i,
-                "October 06 2023·1500 views"
+                "今天天气不错今天天气不错今天天气不错今天天气不错今天天气不错天气不错今天天气不错今天天气不错" +
+                    i,
+                "October 06 2023·1500 views",
+                "this-is-an-article-path-" + i
             );
             writingListContainerElement.appendChild(itemContainerEle);
             writingItemBriefs.push(itemContainerEle);
@@ -282,7 +296,6 @@ function updateUIForPath(urlPath) {
         ) {
             menuItemElementIDToBeSelected = "menu-item-card-" + firstLevelPath;
         } else {
-            console.log("---------dddd--------");
             updateUrlPath("/home");
         }
     }

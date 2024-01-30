@@ -337,9 +337,9 @@ body {
 }
 
 .writing-brief-info-title {
-    white-space: nowrap; /* 不换行 */
-    overflow: hidden; /* 隐藏溢出部分 */
-    text-overflow: ellipsis; /* 显示省略号 */
+    /* white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;  */
 }
 
 .writing-brief-info-hint {
