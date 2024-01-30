@@ -169,6 +169,10 @@ body {
     color: #444;
     font-weight: bold;
 }
+.text-highlight-reverse-bg {
+    color: #eee;
+    font-weight: bold;
+}
 
 #author-job {
     margin-top: 2px;

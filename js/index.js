@@ -84,6 +84,7 @@ function refreshRightContainerForWriting(element, fullPath) {
 }
 
 let writingItemBriefs = [];
+let selectedWritingItemElement = null;
 
 function createOneWritingListItemContainerEle(
     itemElementContainerID,
@@ -122,8 +123,39 @@ function createOneWritingListItemContainerEle(
                 " content: " +
                 "朝辞白帝彩云间，千里江陵一日还，两岸猿声啼不住，轻舟已过万重山。"
         );
+        console.log(this);
+        console.log(typeof this);
+        console.log(this == itemElementContainer);
+        updateWritingItemForSelectedAndUnselectedTheme(this);
     });
+    itemElementContainer.setAttribute("writing-path", path);
     return itemElementContainer;
+}
+
+function updateWritingItemForSelectedAndUnselectedTheme(selectedElement) {
+    for (let element of writingItemBriefs) {
+        if (element == selectedElement) {
+            element.setAttribute(
+                "class",
+                "writing-brief-info-container menu-item-theme-light menu-item-selection"
+            );
+            let titleElement = element.children[0];
+            titleElement.setAttribute(
+                "class",
+                "writing-brief-info-title text-highlight-reverse-bg"
+            );
+        } else {
+            element.setAttribute(
+                "class",
+                "writing-brief-info-container menu-item-theme-light"
+            );
+            let titleElement = element.children[0];
+            titleElement.setAttribute(
+                "class",
+                "writing-brief-info-title text-highlight"
+            );
+        }
+    }
 }
 
 function showWritingPanel(splitedPath) {
