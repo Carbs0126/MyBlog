@@ -154,12 +154,19 @@ function createOneArticleListItemContainerEle(
         updateUrlPath("/article/" + path);
         clearArticleContentPanel();
         // todo 根据后台内容，填充右侧Articlecontentpanel
-        showArticleContentPanel(
-            "title: " +
-                title +
-                " content: " +
-                "朝辞白帝彩云间，千里江陵一日还，两岸猿声啼不住，轻舟已过万重山。"
-        );
+        net.getData(consts.URL_ARTICLE_DETAIL + path).then((data) => {
+            if (data.code == 0) {
+                showArticleContentPanel(
+                    data.data.title,
+                    data.data.content,
+                    data.data.create_time,
+                    data.data.update_time
+                );
+            } else {
+                util.toast(data.message);
+            }
+            console.log(data);
+        });
         console.log(this);
         console.log(typeof this);
         console.log(this == itemElementContainer);
@@ -230,7 +237,7 @@ function showArticlePanel(splitedPath) {
     addListenerForArticleNavElement();
 }
 
-function showArticleContentPanel(content) {
+function showArticleContentPanel(title, content, createTime, updateDate) {
     document.getElementById(
         "content-container-article-content-article-container"
     ).style.display = "block";
