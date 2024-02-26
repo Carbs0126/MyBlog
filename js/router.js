@@ -1,7 +1,7 @@
 class RouterUnit {
     // 请求某个url时，使用refreshFunction来刷新element
-    // 比如请求 writing 时，对应包含两列的element，请求 /writing 后，调用对应的 refreshFunc 来刷新
-    // 比如请求 writing/record-a-nice-day 时，对应包含右侧文章内容的element，请求 /writing/record-a-nice-day 后，调用对应的 refreshFunc 来刷新
+    // 比如请求 article 时，对应包含两列的element，请求 /article 后，调用对应的 refreshFunc 来刷新
+    // 比如请求 article/record-a-nice-day 时，对应包含右侧文章内容的element，请求 /article/record-a-nice-day 后，调用对应的 refreshFunc 来刷新
     constructor(url, element, refreshFunc) {
         this.url = url;
         this.element = element;
@@ -16,8 +16,8 @@ class RouterUnit {
 
 const allRouters = {};
 const firstLevelRouters = {};
-// 当页面刚加载后，会存入 /home /writing /journey /about 这四个地址
-// 当页面加载 /writing 后，会添加所有的文章列表 /writing/aaaa  /writing/bbbb
+// 当页面刚加载后，会存入 /home /article /journey /about 这四个地址
+// 当页面加载 /article 后，会添加所有的文章列表 /article/aaaa  /article/bbbb
 function addRouter(path, containerElement, refreshFunc) {
     allRouters[path] = new RouterUnit(path, containerElement, refreshFunc);
 }

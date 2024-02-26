@@ -1,4 +1,8 @@
 import router from "./router.js";
+import net from "./net.js";
+import util from "./util.js";
+import keys from "./keys.js";
+import consts from "./consts.js";
 
 function displayAllChildrenButID(element, id) {
     for (let childEle of element.children) {
@@ -21,10 +25,10 @@ function refreshRightContainerForHome(element, path) {
         "#content-container-home-article"
     ).innerHTML = `Hi 👋 I'm Onur (meaning Honour in English), a software engineer, dj, writer, and minimalist based in Amsterdam,
     The Netherlands.`;
-    clearWritingPanel();
+    clearArticlePanel();
 }
 
-function refreshRightContainerForWriting(element, fullPath) {
+function refreshRightContainerForArticle(element, fullPath) {
     if (element == null) {
         return;
     }
@@ -34,11 +38,11 @@ function refreshRightContainerForWriting(element, fullPath) {
         let splitedPath = router.splitPath(fullPath);
         if (
             splitedPath.length > 0 &&
-            splitedPath[0].toLowerCase() == "writing"
+            splitedPath[0].toLowerCase() == "article"
         ) {
-            displayAllChildrenButID(element, "content-container-writing");
-            console.log("refreshRightContainerForWriting");
-            showWritingPanel(splitedPath);
+            displayAllChildrenButID(element, "content-container-article");
+            console.log("refreshRightContainerForArticle");
+            showArticlePanel(splitedPath);
         }
     }
 }
@@ -57,7 +61,7 @@ function refreshRightContainerForColumn(element, path) {
             console.log("refreshRightContainerForColumn");
         }
     }
-    clearWritingPanel();
+    clearArticlePanel();
 }
 
 function refreshRightContainerForAbout(element, path) {
@@ -98,28 +102,28 @@ function refreshRightContainerForAbout(element, path) {
     主人何为言少钱，径须沽取对君酌。
     
     五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。</pre></p>`;
-    clearWritingPanel();
+    clearArticlePanel();
 }
 
-let writingItemBriefs = [];
-function clearWritingPanel() {
-    if (writingItemBriefs.length > 0) {
-        writingItemBriefs = [];
-        clearWritingListPanel();
-        clearWritingContentPanel();
+let articleItemBriefs = [];
+function clearArticlePanel() {
+    if (articleItemBriefs.length > 0) {
+        articleItemBriefs = [];
+        clearArticleListPanel();
+        clearArticleContentPanel();
     }
 }
 
-function clearWritingListPanel() {
-    let writingListContainerElement = document.getElementById(
-        "content-container-writing-list"
+function clearArticleListPanel() {
+    let articleListContainerElement = document.getElementById(
+        "content-container-article-list"
     );
-    if (writingListContainerElement != null) {
-        writingListContainerElement.innerHTML = "";
+    if (articleListContainerElement != null) {
+        articleListContainerElement.innerHTML = "";
     }
 }
 
-function createOneWritingListItemContainerEle(
+function createOneArticleListItemContainerEle(
     itemElementContainerID,
     title,
     hint,
@@ -129,28 +133,28 @@ function createOneWritingListItemContainerEle(
     itemElementContainer.setAttribute("id", itemElementContainerID);
     itemElementContainer.setAttribute(
         "class",
-        "writing-brief-info-container menu-item-theme-light"
+        "article-brief-info-container menu-item-theme-light"
     );
     let itemElementTitle = document.createElement("div");
     itemElementTitle.setAttribute(
         "class",
-        "writing-brief-info-title text-highlight"
+        "article-brief-info-title text-highlight"
     );
     itemElementTitle.innerHTML = title;
 
     let itemElementHint = document.createElement("div");
     itemElementHint.setAttribute(
         "class",
-        "writing-brief-info-hint text-normal"
+        "article-brief-info-hint text-normal"
     );
     itemElementHint.innerHTML = hint;
     itemElementContainer.appendChild(itemElementTitle);
     itemElementContainer.appendChild(itemElementHint);
     itemElementContainer.addEventListener("click", function () {
-        updateUrlPath("/writing/" + path);
-        clearWritingContentPanel();
-        // todo 根据后台内容，填充右侧writingcontentpanel
-        showWritingContentPanel(
+        updateUrlPath("/article/" + path);
+        clearArticleContentPanel();
+        // todo 根据后台内容，填充右侧Articlecontentpanel
+        showArticleContentPanel(
             "title: " +
                 title +
                 " content: " +
@@ -159,116 +163,124 @@ function createOneWritingListItemContainerEle(
         console.log(this);
         console.log(typeof this);
         console.log(this == itemElementContainer);
-        updateWritingItemForSelectedAndUnselectedTheme(this);
+        updateArticleItemForSelectedAndUnselectedTheme(this);
     });
-    itemElementContainer.setAttribute("writing-path", path);
+    itemElementContainer.setAttribute("article-path", path);
     return itemElementContainer;
 }
 
-function updateWritingItemForSelectedAndUnselectedTheme(selectedElement) {
-    for (let element of writingItemBriefs) {
+function updateArticleItemForSelectedAndUnselectedTheme(selectedElement) {
+    for (let element of articleItemBriefs) {
         if (element == selectedElement) {
             element.setAttribute(
                 "class",
-                "writing-brief-info-container menu-item-theme-light menu-item-selection"
+                "article-brief-info-container menu-item-theme-light menu-item-selection"
             );
             let titleElement = element.children[0];
             titleElement.setAttribute(
                 "class",
-                "writing-brief-info-title text-highlight-reverse-bg"
+                "article-brief-info-title text-highlight-reverse-bg"
             );
         } else {
             element.setAttribute(
                 "class",
-                "writing-brief-info-container menu-item-theme-light"
+                "article-brief-info-container menu-item-theme-light"
             );
             let titleElement = element.children[0];
             titleElement.setAttribute(
                 "class",
-                "writing-brief-info-title text-highlight"
+                "article-brief-info-title text-highlight"
             );
         }
     }
 }
 
-function showWritingPanel(splitedPath) {
-    let writingListContainerElement = document.getElementById(
-        "content-container-writing-list"
+function showArticlePanel(splitedPath) {
+    let articleListContainerElement = document.getElementById(
+        "content-container-article-list"
     );
-    console.log("-------show writing panel 111");
+    console.log("-------show article panel 111");
 
-    if (writingItemBriefs.length == 0) {
-        console.log("-------show writing panel 222");
-        for (let i = 0; i < 20; i++) {
-            let itemContainerEle = createOneWritingListItemContainerEle(
-                "writing-brief-info-container-id-" + i,
-                "今天天气不错今天天气不错今天天气不错今天天气不错今天天气不错天气不错今天天气不错今天天气不错" +
-                    i,
-                "October 06 2023·1500 views",
-                "this-is-an-article-path-" + i
-            );
-            writingListContainerElement.appendChild(itemContainerEle);
-            writingItemBriefs.push(itemContainerEle);
-        }
+    if (articleItemBriefs.length == 0) {
+        console.log("-------show article panel 222");
+        net.getData(consts.URL_ARTICLE_LIST).then((data) => {
+            if (data.code == 0) {
+                util.toast("请求成功");
+                for (let i = 0; i < data.data.length; i++) {
+                    let dataItem = data.data[i];
+                    let itemContainerEle = createOneArticleListItemContainerEle(
+                        "article-brief-info-container-id-" + i,
+                        dataItem.title,
+                        dataItem.create_date.substring(0, 19),
+                        dataItem.unique_identifier
+                    );
+                    articleListContainerElement.appendChild(itemContainerEle);
+                    articleItemBriefs.push(itemContainerEle);
+                }
+            } else {
+                util.toast(data.message);
+            }
+            console.log(data);
+        });
     }
     if (splitedPath.length > 1) {
-        console.log("show writing panel content 33333");
-        showWritingContentPanel("hahahaahahahah 测试一下子");
+        console.log("show article panel content 33333");
+        showArticleContentPanel("hahahaahahahah 测试一下子");
     }
-    addListenerForWritingNavElement();
+    addListenerForArticleNavElement();
 }
 
-function showWritingContentPanel(content) {
+function showArticleContentPanel(content) {
     document.getElementById(
-        "content-container-writing-content-article-container"
+        "content-container-article-content-article-container"
     ).style.display = "block";
     document.getElementById(
-        "content-container-writing-content-article"
+        "content-container-article-content-article"
     ).innerHTML = content;
 }
 
-function addListenerForWritingNavElement() {
-    let writingNavEle = document.getElementById(
-        "content-container-writing-list-sticky-panel-title"
+function addListenerForArticleNavElement() {
+    let articleNavEle = document.getElementById(
+        "content-container-article-list-sticky-panel-title"
     );
-    console.log(writingNavEle);
-    if (writingNavEle != null) {
-        if (!writingNavEle.hasAttribute("hasOnClickListener")) {
-            writingNavEle.addEventListener("click", function () {
-                console.log("writing nav clicked ");
-                updateUrlPath("/writing");
-                clearWritingContentPanel();
+    console.log(articleNavEle);
+    if (articleNavEle != null) {
+        if (!articleNavEle.hasAttribute("hasOnClickListener")) {
+            articleNavEle.addEventListener("click", function () {
+                console.log("article nav clicked ");
+                updateUrlPath("/article");
+                clearArticleContentPanel();
             });
-            writingNavEle.setAttribute("hasOnClickListener", "added");
+            articleNavEle.setAttribute("hasOnClickListener", "added");
         }
     }
 }
 
-function clearWritingContentPanel() {
-    let writingContentEmptyEle = document.getElementById(
-        "content-container-writing-content-empty"
+function clearArticleContentPanel() {
+    let articleContentEmptyEle = document.getElementById(
+        "content-container-article-content-empty"
     );
-    writingContentEmptyEle.style.display = "none";
-    let writingContentArticleContainerEle = document.getElementById(
-        "content-container-writing-content-article-container"
+    articleContentEmptyEle.style.display = "none";
+    let articleContentArticleContainerEle = document.getElementById(
+        "content-container-article-content-article-container"
     );
-    writingContentArticleContainerEle.style.display = "none";
-    let writingContentArticleEle = document.getElementById(
-        "content-container-writing-content-article"
+    articleContentArticleContainerEle.style.display = "none";
+    let articleContentArticleEle = document.getElementById(
+        "content-container-article-content-article"
     );
-    writingContentArticleEle.innerHTML = "";
+    articleContentArticleEle.innerHTML = "";
 }
 
 let firstLevelIDS = [
     "menu-item-card-home",
-    "menu-item-card-writing",
+    "menu-item-card-article",
     "menu-item-card-column",
     "menu-item-card-about",
 ];
 
 let refreshFunctions = {
     home: refreshRightContainerForHome,
-    writing: refreshRightContainerForWriting,
+    article: refreshRightContainerForArticle,
     column: refreshRightContainerForColumn,
     about: refreshRightContainerForAbout,
 };
