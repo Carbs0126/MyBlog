@@ -123,14 +123,9 @@ function clearArticleListPanel() {
     }
 }
 
-function createOneArticleListItemContainerEle(
-    itemElementContainerID,
-    title,
-    hint,
-    path
-) {
+function createOneArticleListItemContainerEle(containerID, title, hint, path) {
     let itemElementContainer = document.createElement("div");
-    itemElementContainer.setAttribute("id", itemElementContainerID);
+    itemElementContainer.setAttribute("id", containerID);
     itemElementContainer.setAttribute(
         "class",
         "article-brief-info-container menu-item-theme-light"
@@ -153,27 +148,27 @@ function createOneArticleListItemContainerEle(
     itemElementContainer.addEventListener("click", function () {
         updateUrlPath("/article/" + path);
         clearArticleContentPanel();
-        // todo 根据后台内容，填充右侧Articlecontentpanel
-        net.getData(consts.URL_ARTICLE_DETAIL + path).then((data) => {
-            if (data.code == 0) {
-                showArticleContentPanel(
-                    data.data.title,
-                    data.data.content,
-                    data.data.create_time,
-                    data.data.update_time
-                );
-            } else {
-                util.toast(data.message);
-            }
-            console.log(data);
-        });
-        console.log(this);
-        console.log(typeof this);
-        console.log(this == itemElementContainer);
+        requestArticleDetailAndShowContent(path);
         updateArticleItemForSelectedAndUnselectedTheme(this);
     });
     itemElementContainer.setAttribute("article-path", path);
     return itemElementContainer;
+}
+
+function requestArticleDetailAndShowContent(articleIdentifier) {
+    net.getData(consts.URL_ARTICLE_DETAIL + articleIdentifier).then((data) => {
+        if (data.code == 0) {
+            showArticleContentPanel(
+                data.data.title,
+                data.data.content,
+                data.data.create_time,
+                data.data.update_time
+            );
+        } else {
+            util.toast(data.message);
+        }
+        console.log(data);
+    });
 }
 
 function updateArticleItemForSelectedAndUnselectedTheme(selectedElement) {
@@ -207,22 +202,36 @@ function showArticlePanel(splitedPath) {
         "content-container-article-list"
     );
     console.log("-------show article panel 111");
-
+    let uniqueIdentifierInPath = "";
+    if (splitedPath.length >= 2) {
+        uniqueIdentifierInPath = splitedPath[1];
+    }
     if (articleItemBriefs.length == 0) {
         console.log("-------show article panel 222");
         net.getData(consts.URL_ARTICLE_LIST).then((data) => {
             if (data.code == 0) {
                 util.toast("请求成功");
+                let selectedItem = null;
                 for (let i = 0; i < data.data.length; i++) {
                     let dataItem = data.data[i];
                     let itemContainerEle = createOneArticleListItemContainerEle(
                         "article-brief-info-container-id-" + i,
                         dataItem.title,
-                        dataItem.create_date.substring(0, 19),
+                        util.secondTimeToDateStr(dataItem.create_date),
                         dataItem.unique_identifier
                     );
                     articleListContainerElement.appendChild(itemContainerEle);
                     articleItemBriefs.push(itemContainerEle);
+                    if (uniqueIdentifierInPath == dataItem.unique_identifier) {
+                        selectedItem = itemContainerEle;
+                    }
+                }
+                if (selectedItem != null) {
+                    console.log("------>>>>>>>>>> select and show article");
+                    updateArticleItemForSelectedAndUnselectedTheme(
+                        selectedItem
+                    );
+                    requestArticleDetailAndShowContent(uniqueIdentifierInPath);
                 }
             } else {
                 util.toast(data.message);

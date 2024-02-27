@@ -29,6 +29,31 @@ function getCookie(key) {
     return null; // 如果找不到对应名称的Cookie
 }
 
+function secondTimeToDateStr(timeInSecondUnit) {
+    var date = new Date(timeInSecondUnit * 1000);
+
+    var year = date.getFullYear();
+    var month = ("0" + (date.getMonth() + 1)).slice(-2); // 月份从0开始，需要+1，并且保证两位数
+    var day = ("0" + date.getDate()).slice(-2); // 保证两位数
+    var hours = ("0" + date.getHours()).slice(-2); // 保证两位数
+    var minutes = ("0" + date.getMinutes()).slice(-2); // 保证两位数
+    var seconds = ("0" + date.getSeconds()).slice(-2); // 保证两位数
+
+    return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        " " +
+        hours +
+        ":" +
+        minutes +
+        ":" +
+        seconds
+    );
+}
+
 function toast(str) {
     Toastify({
         text: str,
@@ -47,5 +72,6 @@ function toast(str) {
 export default {
     setCookie,
     getCookie,
+    secondTimeToDateStr,
     toast,
 };
