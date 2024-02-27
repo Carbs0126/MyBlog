@@ -161,8 +161,8 @@ function requestArticleDetailAndShowContent(articleIdentifier) {
             showArticleContentPanel(
                 data.data.title,
                 data.data.content,
-                data.data.create_time,
-                data.data.update_time
+                data.data.create_date,
+                data.data.update_date
             );
         } else {
             util.toast(data.message);
@@ -239,10 +239,10 @@ function showArticlePanel(splitedPath) {
             console.log(data);
         });
     }
-    if (splitedPath.length > 1) {
-        console.log("show article panel content 33333");
-        showArticleContentPanel("hahahaahahahah 测试一下子");
-    }
+    // if (splitedPath.length > 1) {
+    //     console.log("show article panel content 33333");
+    //     showArticleContentPanel("hahahaahahahah 测试一下子");
+    // }
     addListenerForArticleNavElement();
 }
 
@@ -251,7 +251,13 @@ function showArticleContentPanel(title, content, createTime, updateDate) {
         "content-container-article-content-article-container"
     ).style.display = "block";
     document.getElementById(
-        "content-container-article-content-article"
+        "content-container-article-content-article-title"
+    ).innerHTML = title;
+    document.getElementById(
+        "content-container-article-content-article-hint"
+    ).innerHTML = util.secondTimeToDateStr(createTime);
+    document.getElementById(
+        "content-container-article-content-article-content"
     ).innerHTML = content;
 }
 
@@ -281,10 +287,15 @@ function clearArticleContentPanel() {
         "content-container-article-content-article-container"
     );
     articleContentArticleContainerEle.style.display = "none";
-    let articleContentArticleEle = document.getElementById(
-        "content-container-article-content-article"
-    );
-    articleContentArticleEle.innerHTML = "";
+    document.getElementById(
+        "content-container-article-content-article-title"
+    ).innerHTML = "";
+    document.getElementById(
+        "content-container-article-content-article-hint"
+    ).innerHTML = "";
+    document.getElementById(
+        "content-container-article-content-article-content"
+    ).innerHTML = "";
 }
 
 let firstLevelIDS = [

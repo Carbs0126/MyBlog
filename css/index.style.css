@@ -287,14 +287,14 @@ body {
 #content-container-article {
     display: none;
     flex: 1;
-    background-color: yellowgreen;
+    /* background-color: yellowgreen; */
 }
 
 #content-container-article-container {
     display: flex;
     flex: 1;
     flex-direction: row;
-    background-color: yellow;
+    /* background-color: yellow; */
 }
 /* 文章列表 */
 #content-container-article-list-container {
@@ -358,7 +358,7 @@ body {
     /* align-items: center; */
     /* justify-content: center; */
     height: 100vh;
-    background-color: red;
+    /* background-color: red; */
 }
 /* 文章为空时显示 */
 #content-container-article-content-empty {
@@ -384,12 +384,27 @@ body {
 #content-container-article-content-article-container {
     display: none;
     margin-top: 4rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding-left: 16px;
+    padding-right: 16px;
     margin-left: auto;
     margin-right: auto;
-    background-color: cyan;
-    max-width: 1000px;
+    width: 820px;
+    /* background-color: cyan; */
+}
+
+#content-container-article-content-article-title {
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+#content-container-article-content-article-hint {
+    margin-top: 16px;
+    font-size: 1rem;
+    color: #9da3ae;
+}
+
+#content-container-article-content-article-content {
+    margin-top: 24px;
 }
 
 /* #content-container-home-article {
