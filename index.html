@@ -18,6 +18,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="我的个人网站 Android iOS 前端 后端" />
         <meta name="keywords" content="我的个人网站" />
+        <link rel="stylesheet" href="/css/index.style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+        <link
+            href="https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.2/dist/quill.snow.css"
+            rel="stylesheet"
+        />
         <link
             rel="preload"
             href="/font/Geist.woff2"
@@ -33,7 +45,7 @@
             type="font/woff2"
         />
         <title>欢迎来到我的个人网站</title>
-        <link rel="stylesheet" href="/css/index.style.css" />
+
         <link
             rel="preload"
             as="style"
@@ -232,9 +244,12 @@
                             <div
                                 id="content-container-article-content-article-hint"
                             ></div>
-                            <div
-                                id="content-container-article-content-article-content"
-                            ></div>
+                            <div class="ql-snow">
+                                <div
+                                    class="ql-editor"
+                                    id="content-container-article-content-article-content"
+                                ></div>
+                            </div>
                         </div>
                     </div>
                 </div>
