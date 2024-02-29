@@ -301,7 +301,7 @@ body {
     position: fixed;
     display: flex;
     align-items: center;
-    width: var(--content-container-article-lis-width);
+    width: var(--content-container-article-list-width);
     height: var(--content-container-article-list-sticky-panel-height);
     border-bottom: 1px solid #e1e3e8;
 }
