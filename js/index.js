@@ -32,8 +32,6 @@ function refreshRightContainerForArticle(element, fullPath) {
     if (element == null) {
         return;
     }
-    console.log("--------------------------------");
-    console.log(fullPath);
     if (fullPath != null) {
         let splitedPath = router.splitPath(fullPath);
         if (
@@ -41,7 +39,6 @@ function refreshRightContainerForArticle(element, fullPath) {
             splitedPath[0].toLowerCase() == "article"
         ) {
             displayAllChildrenButID(element, "content-container-article");
-            console.log("refreshRightContainerForArticle");
             showArticlePanel(splitedPath);
         }
     }
@@ -58,7 +55,6 @@ function refreshRightContainerForColumn(element, path) {
             splitedPath[0].toLowerCase() == "column"
         ) {
             displayAllChildrenButID(element, "content-container-column");
-            console.log("refreshRightContainerForColumn");
         }
     }
     clearArticlePanel();
@@ -72,7 +68,6 @@ function refreshRightContainerForAbout(element, path) {
         let splitedPath = router.splitPath(path);
         if (splitedPath.length > 0 && splitedPath[0].toLowerCase() == "about") {
             displayAllChildrenButID(element, "content-container-about");
-            console.log("refreshRightContainerForAbout");
         }
     }
     element.querySelector(
@@ -164,10 +159,7 @@ function requestArticleDetailAndShowContent(articleIdentifier) {
                 data.data.create_date,
                 data.data.update_date
             );
-        } else {
-            util.toast(data.message);
         }
-        console.log(data);
     });
 }
 
@@ -201,16 +193,13 @@ function showArticlePanel(splitedPath) {
     let articleListContainerElement = document.getElementById(
         "content-container-article-list"
     );
-    console.log("-------show article panel 111");
     let uniqueIdentifierInPath = "";
     if (splitedPath.length >= 2) {
         uniqueIdentifierInPath = splitedPath[1];
     }
     if (articleItemBriefs.length == 0) {
-        console.log("-------show article panel 222");
-        net.getData(consts.URL_ARTICLE_LIST).then((data) => {
+        net.getData(consts.URL_ARTICLE_LIST_ALL).then((data) => {
             if (data.code == 0) {
-                util.toast("请求成功");
                 let selectedItem = null;
                 for (let i = 0; i < data.data.length; i++) {
                     let dataItem = data.data[i];
@@ -227,22 +216,14 @@ function showArticlePanel(splitedPath) {
                     }
                 }
                 if (selectedItem != null) {
-                    console.log("------>>>>>>>>>> select and show article");
                     updateArticleItemForSelectedAndUnselectedTheme(
                         selectedItem
                     );
                     requestArticleDetailAndShowContent(uniqueIdentifierInPath);
                 }
-            } else {
-                util.toast(data.message);
             }
-            console.log(data);
         });
     }
-    // if (splitedPath.length > 1) {
-    //     console.log("show article panel content 33333");
-    //     showArticleContentPanel("hahahaahahahah 测试一下子");
-    // }
     addListenerForArticleNavElement();
 }
 
@@ -265,11 +246,9 @@ function addListenerForArticleNavElement() {
     let articleNavEle = document.getElementById(
         "content-container-article-list-sticky-panel-title"
     );
-    console.log(articleNavEle);
     if (articleNavEle != null) {
         if (!articleNavEle.hasAttribute("hasOnClickListener")) {
             articleNavEle.addEventListener("click", function () {
-                console.log("article nav clicked ");
                 updateUrlPath("/article");
                 clearArticleContentPanel();
             });
